@@ -86,7 +86,7 @@ rl.on('line', line => {
       events.push({
         date: date,
         time: time,
-        event_direction: !!consuming_event_name ? 'Consumed' : 'Emitted',
+        event_direction: consuming_event_name ? 'Consumed' : 'Emitted',
         key: key,
         event_correlation: event_correlation,
         event_name: consuming_event_name || emitting_event_name,
@@ -102,9 +102,9 @@ rl.on('close', () => {
     events.map(e => {
       return {
         'Event Date': e.date,
-        'Direction': e.event_direction,
+        Direction: e.event_direction,
         'Event Name': e.event_name,
-        'Key': e.key,
+        Key: e.key,
         'Correlation Id': e.event_correlation
       };
     })
