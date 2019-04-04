@@ -3,6 +3,7 @@ var fs = require('fs');
 
 const readStream = fs.createReadStream('log.in');
 const writeStream = fs.createWriteStream('output.out');
+let lineIndex = 0;
 
 var rl = readline.createInterface({
   input: readStream,
@@ -75,25 +76,30 @@ function getRoutingKey(event) {
 
 rl.on('line', line => {
   if (line != '' && line != '/n') {
-    const date = getDate(line);
-    const time = transformeDateIntoInteger(date);
-    const consuming_event_name = getConsumerEventByName('event', line) || getEventByName('verb', line);
-    const event_correlation =
-      getConsumerEventByName('correlation_id', line) ||
-      getEventByName('correlation_id', line) ||
-      getEventByName(':type=>"step", :id', line);
-    const emitting_event_name = getPublishEventByNameOrchestrator('event_name', line);
-    const key = getRoutingKey(line) || getPublishEventByNameOrchestrator('resource', line);
+    lineIndex++;
+    try {
+      const date = getDate(line);
+      const time = transformeDateIntoInteger(date);
+      const consuming_event_name = getConsumerEventByName('event', line) || getEventByName('verb', line);
+      const event_correlation =
+        getConsumerEventByName('correlation_id', line) ||
+        getEventByName('correlation_id', line) ||
+        getEventByName(':type=>"step", :id', line);
+      const emitting_event_name = getPublishEventByNameOrchestrator('event_name', line);
+      const key = getRoutingKey(line) || getPublishEventByNameOrchestrator('resource', line);
 
-    events.push({
-      date: date,
-      time: time,
-      event_direction: consuming_event_name ? 'Consumed' : 'Emitted',
-      key: key,
-      event_correlation: event_correlation,
-      event_name: consuming_event_name || emitting_event_name,
-      event_content: line
-    });
+      events.push({
+        date: date,
+        time: time,
+        event_direction: consuming_event_name ? 'Consumed' : 'Emitted',
+        key: key,
+        event_correlation: event_correlation,
+        event_name: consuming_event_name || emitting_event_name,
+        event_content: line
+      });
+    } catch (err) {
+      console.error(`Error on line number: ${lineIndex} > ${line}`);
+    }
   }
 });
 
