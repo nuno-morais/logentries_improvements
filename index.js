@@ -121,9 +121,12 @@ rl.on('line', line => {
 });
 
 rl.on('close', () => {
-  events = events.filter(q => q.event_name != null && q.event_name != 'initialize' && q.event_name != 'execute');
   events.sort((a, b) => a.time - b.time);
+  writeStream.write(
+    events.map(e => e.date + ' ' + e.event_name + ' ' + e.event_correlation + ' <> ' + e.event_content).join('\n')
+  );
 
+  events = events.filter(q => q.event_name != null && q.event_name != 'initialize' && q.event_name != 'execute');
   console.log('Timeline');
   console.table(
     events.map(e => {
@@ -201,8 +204,4 @@ rl.on('close', () => {
   );
 
   console.log(output);
-
-  writeStream.write(
-    events.map(e => e.date + ' ' + e.event_name + ' ' + e.event_correlation + ' <> ' + e.event_content).join('\n')
-  );
 });
