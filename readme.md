@@ -10,9 +10,9 @@ You can write directly the logs on the terminal or write it in a file and redire
 
 Available commands:
 
-- `$node dist/Bin/Logs.js timeline`
-- `$node dist/Bin/Logs.js -r timeline` (if you want to see the event payload)
-- `$node dist/Bin/Logs.js sort` (only sorts the logs)
-- `$node dist/Bin/Logs.js query --query "where(/bla/ OR /bla1/ OR /bla2/) -hours 24"` (get list of logs -> is better redirect the output to a file using `> file.out`)
+- `$ node dist/Bin/Logs.js timeline`
+- `$ node dist/Bin/Logs.js -r timeline` (if you want to see the event payload)
+- `$ node dist/Bin/Logs.js sort` (only sorts the logs)
+- `$ node dist/Bin/Logs.js query --query "where(/bla/ OR /bla1/ OR /bla2/) -hours 24"` (get list of logs -> is better redirect the output to a file using `> file.out`)
 
 ![Logs](docs/imgs/logs.png)
