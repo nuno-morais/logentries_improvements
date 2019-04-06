@@ -4,6 +4,7 @@ import { command } from "yargs";
 import { DateOperation } from "../Operations/DateOperation";
 import { EventTransformerOperation } from "../Operations/EventTransformerOperation";
 import { TimeTransformerOperation } from "../Operations/TimeTransformerOperation";
+import { Logentries } from "./../Queries/Logentries";
 
 // tslint:disable-next-line: no-unused-expression
 command(
@@ -19,6 +20,15 @@ command(
             withResults: { type: "boolean", demandOption: false, alias: "r" },
         },
         timeline,
+    )
+    .command(
+        "query",
+        "Query on logentries",
+        {
+            hours: { type: "number", demandOption: false, alias: "h", default: 48 },
+            query: { type: "string", demandOption: true, alias: "q" },
+        },
+        queryLogentries,
     )
     .wrap(null)
     .demandCommand(1)
@@ -164,5 +174,14 @@ function execute(executeOperations: string[] = [], resultCallback: (events) => v
     }, () => {
         const e = [...events].sort((a, b) => a.time.localeCompare(b.time));
         resultCallback(e);
+    });
+}
+
+async function queryLogentries({ query, hours }) {
+    const logEntriesQuery = new Logentries();
+    const messages = await logEntriesQuery.call(query, hours);
+    messages.forEach((message) => {
+        // tslint:disable-next-line: no-console
+        console.log(message);
     });
 }

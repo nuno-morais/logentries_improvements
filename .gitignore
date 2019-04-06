@@ -4,3 +4,4 @@ log.in
 output.out
 node_modules/
 dist/
+.env

@@ -22,16 +22,22 @@ export class EventTransformerOperation implements IOperation {
     ];
     public call(event: string) {
         const processor = this.genericEventProcessors.find((q) => q.CanProcess(event));
-        if (processor) {
-            return processor.Process(event);
-        } else {
-            for (const transformer of this.transformers) {
-                const result = transformer.call(event);
-                if (result != null) {
-                    return result;
+        try {
+            if (processor) {
+                return processor.Process(event);
+            } else {
+                for (const transformer of this.transformers) {
+                    const result = transformer.call(event);
+                    if (result != null) {
+                        return result;
+                    }
                 }
             }
+        } catch (err) {
+            // tslint:disable-next-line: no-console
+            console.error("Parsing error", event, err);
         }
+
         return null;
     }
 }
