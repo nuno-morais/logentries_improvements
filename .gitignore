@@ -1,8 +1,9 @@
 
 node_modules
-log.in
-output.out
+*.in
+*.out
 node_modules/
 dist/
 .env
+.env**
 node_modules/.yarn-integrity

@@ -23,8 +23,11 @@ export class Logentries {
         const promises = [];
         Object.entries(logentries).forEach((config) => {
             const promise = new Promise<string[]>((resolve, reject) => {
-                const apiKey = config[0];
-                this.opts.logId = config[1];
+                let apiKey;
+                Object.entries(config[1]).forEach((service) => {
+                    apiKey = service[0];
+                    this.opts.logId = service[1];
+                });
                 const queryLogentries = queryLogentriesFactory(apiKey, this.queryUrl);
                 queryLogentries(this.opts, (err, messages) => {
                     if (err) {

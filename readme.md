@@ -25,5 +25,5 @@ Constants that have to be defined on a `.env` file.
 
 | Variable                                      | Description                                                                      |
 | --------------------------------------------- | -------------------------------------------------------------------------------- |
-| **LOGENTRIES_API_KEY_LOG_ID**                 | { "key_id_1": "log_id_1", "key_id_2": "log_id_2" ...}                            |
+| **LOGENTRIES_API_KEY_LOG_ID**                 | { "SYSTEM_1": { "key_id_1": "log_id_1" }, "SYSTEM_2": {"key_id_2": "log_id_2" }, ...}|
 |                                               |                                                                                   |
