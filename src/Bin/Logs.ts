@@ -167,10 +167,15 @@ function execute(executeOperations: string[] = [], resultCallback: (events) => v
 
     readLineByLine((line) => {
         const event = { content: line };
-        operations.forEach(((o) => {
-            event[o.name] = o.instance.call(line);
-        }));
-        events.push(event as any);
+        try {
+            operations.forEach(((o) => {
+                event[o.name] = o.instance.call(line);
+            }));
+            events.push(event as any);
+        } catch (error) {
+            // tslint:disable-next-line: no-console
+            console.error(error, line);
+        }
     }, () => {
         const e = [...events].sort((a, b) => a.time.localeCompare(b.time));
         resultCallback(e);
