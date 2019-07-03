@@ -39,7 +39,13 @@ export class Logentries {
             });
             promises.push(promise);
         });
-        return Promise.all(promises).then((messages: string[]) => this.flatten(messages));
+        return Promise.all(promises)
+            .then((messages: string[]) => this.flatten(messages))
+            .catch((err) => {
+                // tslint:disable-next-line: no-console
+                console.error(err);
+                return [];
+            });
     }
 
     private flatten(list) {
